@@ -133,8 +133,8 @@ class ResponseCapture:
 class ProfileLock:
     """Cross-process single-instance lock for the browser profile."""
 
-    def __init__(self, path: Path = BROWSER_LOCK_PATH):
-        self.path = path
+    def __init__(self, path: Path | None = None):
+        self.path = path or BROWSER_LOCK_PATH
         self._owned = False
 
     def acquire(self) -> None:
