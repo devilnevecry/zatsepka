@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+data/
+debug/
+logs/
+docs/ref_geoleadscraper/
+*.egg-info/
+.vscode/
+.idea/

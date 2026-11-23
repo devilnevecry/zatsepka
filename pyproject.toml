@@ -1,0 +1,41 @@
+[project]
+name = "rozvedka"
+version = "0.1.0"
+description = "Local lead reconnaissance app: maps scraping, dedupe, enrichment, outreach prompts"
+requires-python = ">=3.12"
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = ["docs/ref_geoleadscraper", ".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = [
+    "E501",  # line length handled by formatter budget
+    "B008",  # function call in default arg (FastAPI Depends pattern)
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-m 'not live'"
+markers = [
+    "unit: fast offline unit tests (default)",
+    "integration: tests that touch local processes, DB files or a real browser",
+    "e2e: Playwright against the app with fake scrapers",
+    "live: real sites, run only with pytest -m live",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+[tool.coverage.run]
+source = ["app"]
+omit = ["app/tools/*", "app/web/static/*"]
+
+[tool.coverage.report]
+precision = 1
+show_missing = false
