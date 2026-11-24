@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="stub-page">
+  <h1>{{ title }}</h1>
+  <p class="stub-text">Раздел в разработке. Данные сохраняются локально.</p>
+  <div class="stub-card">
+    {% for item in items or [] %}
+      <div class="stub-row">{{ item }}</div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

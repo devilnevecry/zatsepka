@@ -30,9 +30,10 @@ def create_app() -> FastAPI:
     def health() -> dict:
         return {"ok": True}
 
-    from app.web.routes import pages
+    from app.web.routes import api, pages
 
     app.include_router(pages.router)
+    app.include_router(api.router)
     return app
 
 

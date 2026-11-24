@@ -285,6 +285,7 @@ class JobRunner:
             if count % 10 == 0:
                 event_bus.publish(job_id, "progress", {"pair_id": pair_id, "found": count, "source": source})
         unique = 0
+        new_lead_ids: list[int] = []
         with session_scope() as session:
             from app.core.dedupe import merge_places
 
@@ -309,7 +310,9 @@ class JobRunner:
                 )
                 lead = upsert_lead(session, data, job_id=job_id)
                 unique += 1
-                event_bus.publish(job_id, "lead", {"id": lead.id, "name": lead.name, "source": source})
+                new_lead_ids.append(lead.id)
+        for lead_id in new_lead_ids:
+            event_bus.publish(job_id, "lead", {"id": lead_id, "source": source})
         return unique
 
 

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>РАЗВЕДКА</title>
+  <link rel="stylesheet" href="/static/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body class="theme-dark">
+  <header class="topbar">
+    <span class="pin">📍</span>
+    <span class="brand">РАЗВЕДКА</span>
+    <span class="version">v0.1.0</span>
+    <span class="topbar-spacer"></span>
+    <span id="job-status" class="job-status"></span>
+  </header>
+
+  <div class="app-body">
+    <nav class="rail" aria-label="Основная навигация">
+      <a href="/" class="rail-item {% if active == 'search' %}active{% endif %}" data-key="search"><span class="rail-icon">🔍</span><span>Поиск</span></a>
+      <a href="/page/dashboard" class="rail-item {% if active == 'dashboard' %}active{% endif %}" data-key="dashboard"><span class="rail-icon">📊</span><span>Дашборд</span></a>
+      <a href="/page/profile" class="rail-item {% if active == 'profile' %}active{% endif %}" data-key="profile"><span class="rail-icon">👤</span><span>Профиль</span></a>
+      <a href="/page/chats" class="rail-item {% if active == 'chats' %}active{% endif %}" data-key="chats"><span class="rail-icon">💬</span><span>Чаты</span></a>
+      <a href="/page/otbor" class="rail-item {% if active == 'otbor' %}active{% endif %}" data-key="otbor"><span class="rail-icon">🔻</span><span>Отбор</span></a>
+      <a href="/page/messages" class="rail-item {% if active == 'messages' %}active{% endif %}" data-key="messages"><span class="rail-icon">✉</span><span>Сообщения</span></a>
+      <a href="/page/ai" class="rail-item {% if active == 'ai' %}active{% endif %}" data-key="ai"><span class="rail-icon">✨</span><span>ИИ</span></a>
+      <a href="/page/base" class="rail-item {% if active == 'base' %}active{% endif %}" data-key="base"><span class="rail-icon">🗄</span><span>База</span></a>
+      <a href="/page/keys" class="rail-item {% if active == 'keys' %}active{% endif %}" data-key="keys"><span class="rail-icon">⌨</span><span>Клавиши</span></a>
+      <a href="/page/charts" class="rail-item {% if active == 'charts' %}active{% endif %}" data-key="charts"><span class="rail-icon">📈</span><span>Графики</span></a>
+      <a href="/page/settings" class="rail-item {% if active == 'settings' %}active{% endif %}" data-key="settings"><span class="rail-icon">⚙</span><span>Настройки</span></a>
+      <a href="/page/help" class="rail-item {% if active == 'help' %}active{% endif %}" data-key="help"><span class="rail-icon">?</span><span>Помощь</span></a>
+      <button id="theme-toggle" class="theme-toggle" type="button" title="Сменить тему"><span>🌙</span><span class="theme-label">Ночь</span></button>
+    </nav>
+
+    <main class="main-content">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <div id="banner" class="banner hidden" role="alert"></div>
+  <div id="drawer-backdrop" class="drawer-backdrop hidden"></div>
+  <aside id="drawer" class="drawer hidden" aria-label="Карточка лида"></aside>
+
+  <script src="/static/vendor/htmx.min.js"></script>
+  <script src="/static/vendor/alpine.min.js" defer></script>
+  <script src="/static/vendor/chart.umd.js"></script>
+  <script src="/static/vendor/leaflet/leaflet.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

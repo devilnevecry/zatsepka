@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="search-page">
+  <section class="left-panel" aria-label="Параметры поиска">
+    <h2 class="panel-title">Параметры</h2>
+
+    <div class="chip-block">
+      <label>Города</label>
+      <div id="city-chips" class="chips"></div>
+      <div class="chip-add-row">
+        <input id="city-input" type="text" placeholder="Добавить город" aria-label="Новый город">
+        <button id="city-add" class="btn-mini" type="button">+</button>
+      </div>
+    </div>
+
+    <div class="chip-block">
+      <label>Категории</label>
+      <div id="category-chips" class="chips"></div>
+      <div class="chip-add-row">
+        <input id="category-input" type="text" placeholder="Добавить категорию" aria-label="Новая категория">
+        <button id="category-add" class="btn-mini" type="button">+</button>
+      </div>
+      <button id="category-all" class="link-btn" type="button">добавить все</button>
+    </div>
+
+    <div class="params-block">
+      <label class="check-row"><input id="no-repeat" type="checkbox" checked> Не повторять пары «город × категория» за <input id="skip-days" type="number" min="1" value="14"> дней</label>
+      <details>
+        <summary>Тонкая настройка: пауза и лимиты</summary>
+        <div class="fine-tune">
+          <label>Пауза от <input id="pause-min" type="number" step="0.1" value="0.8"> до <input id="pause-max" type="number" step="0.1" value="2.5"> с</label>
+          <label>Результатов на пару <input id="max-results" type="number" value="60"></label>
+          <label>Минут на запуск <input id="max-minutes" type="number" value="60"></label>
+          <label class="check-row"><input id="force" type="checkbox"> Искать повторно (force)</label>
+        </div>
+      </details>
+    </div>
+
+    <div id="estimate-box" class="estimate-box">Загрузка оценки…</div>
+
+    <div class="source-toggles">
+      <label class="check-row"><input type="checkbox" data-source="google" checked> Google</label>
+      <label class="check-row"><input type="checkbox" data-source="yandex" checked> Яндекс</label>
+      <label class="check-row"><input type="checkbox" data-source="twogis" checked> 2ГИС</label>
+    </div>
+
+    <div class="job-controls">
+      <button id="start-btn" class="btn-primary" type="button">▶ Начать поиск</button>
+      <button id="pause-btn" class="btn-secondary" type="button">Пауза</button>
+      <button id="stop-btn" class="btn-danger" type="button">Стоп</button>
+    </div>
+  </section>
+
+  <section class="results-panel" aria-label="Результаты">
+    <div class="results-toolbar">
+      <div class="pill-tabs" role="tablist">
+        <button class="pill active" data-tab="parser" type="button" role="tab">Парсер <span id="count-parser">0</span></button>
+        <button class="pill" data-tab="base" type="button" role="tab">База <span id="count-base">0</span></button>
+        <button class="pill" data-tab="messages" type="button" role="tab">Сообщения <span id="count-messages">0</span></button>
+      </div>
+      <input id="global-search" type="search" placeholder="Поиск по всем лидам" aria-label="Поиск по лидам">
+      <select id="filter-city" aria-label="Фильтр по городу"><option value="">Все города</option></select>
+      <select id="filter-type" aria-label="Фильтр по типу"><option value="">Все типы</option></select>
+      <select id="filter-sphere" aria-label="Фильтр по сфере"><option value="">Все сферы</option></select>
+      <select id="filter-status" aria-label="Фильтр по статусу">
+        <option value="">Все статусы</option>
+        <option value="new">Новое</option><option value="in_base">В базе</option><option value="waiting_reply">Ждёт ответа</option><option value="replied">Ответили</option>
+      </select>
+    </div>
+    <div class="results-subbar">
+      <span id="shown-line">Показано 0 из 0 лидов (в базе 0)</span>
+      <span class="subbar-spacer"></span>
+      <button id="export-btn" class="icon-btn" type="button" title="Экспорт">⇩</button>
+      <button id="delete-btn" class="icon-btn danger" type="button" title="Удалить выбранные">🗑</button>
+    </div>
+    <div id="card-grid" class="card-grid" aria-live="polite"></div>
+  </section>
+</div>
+{% endblock %}
