@@ -25,4 +25,4 @@ def test_index_stub(tmp_db):
     with TestClient(app) as client:
         resp = client.get("/")
         assert resp.status_code == 200
-        assert "РАЗВЕДКА" in resp.text
+        assert "ЗАЦЕПКА" in resp.text

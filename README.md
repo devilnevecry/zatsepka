@@ -1,8 +1,8 @@
-# РАЗВЕДКА — локальный поиск лидов по картам
+# ЗАЦЕПКА — локальный поиск лидов по картам
 
 Установка: `run.bat` создаёт .venv, ставит зависимости из requirements.txt и скачивает Chromium.
 Запуск: двойной клик по `run.bat`. Приложение откроет http://127.0.0.1:8000 в браузере.
-Данные: `data/rozvedka.db` (SQLite WAL), `data/browser_profile/` (профиль Chrome), копии БД в `data/backups/` (последние 5).
+Данные: `data/zatsepka.db` (SQLite WAL), `data/browser_profile/` (профиль Chrome), копии БД в `data/backups/` (последние 5).
 Отладка: `debug/capture/<источник>/<время>/` — HTML, скриншоты и JSON-ответы; логи в `logs/`.
 Тесты: `.venv\Scripts\python.exe -m pytest -q`; с покрытием: `-m pytest -q --cov=app --cov-report=term`.
 Live-тесты (реальные сайты, только Саратов): `.venv\Scripts\python.exe -m pytest -m live -q`.

@@ -19,11 +19,11 @@ def backup_db(source: Path | None = None) -> Path | None:
         return None
     BACKUP_DIR.mkdir(parents=True, exist_ok=True)
     stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    target = BACKUP_DIR / f"rozvedka_{stamp}.db"
+    target = BACKUP_DIR / f"zatsepka_{stamp}.db"
     if src.resolve() == target.resolve():
         return None
     shutil.copy2(src, target)
-    for old in sorted(BACKUP_DIR.glob("rozvedka_*.db"), reverse=True)[KEEP:]:
+    for old in sorted(BACKUP_DIR.glob("zatsepka_*.db"), reverse=True)[KEEP:]:
         try:
             old.unlink()
         except OSError:

@@ -1,5 +1,5 @@
 [project]
-name = "rozvedka"
+name = "zatsepka"
 version = "0.1.0"
 description = "Local lead reconnaissance app: maps scraping, dedupe, enrichment, outreach prompts"
 requires-python = ">=3.12"

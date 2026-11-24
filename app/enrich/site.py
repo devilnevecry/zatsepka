@@ -77,7 +77,7 @@ async def fetch_site(url: str, max_pages: int = 3, concurrency: int = 5) -> Site
     """Fetch main + /contacts + /kontakty pages, only same-domain links named 'контакты'."""
     if not url.startswith(("http://", "https://")):
         url = "https://" + url
-    headers = {"User-Agent": "Mozilla/5.0 (compatible; Rozvedka/0.1)"}
+    headers = {"User-Agent": "Mozilla/5.0 (compatible; Zatsepka/0.1)"}
     semaphore = asyncio.Semaphore(concurrency)
     timeout = httpx.Timeout(8.0)
 

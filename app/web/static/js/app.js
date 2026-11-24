@@ -17,7 +17,7 @@
   }
 
   function savedTheme() {
-    try { return localStorage.getItem("rozvedka-theme") || "dark"; } catch { return "dark"; }
+    try { return localStorage.getItem("zatsepka-theme") || "dark"; } catch { return "dark"; }
   }
 
   function applyTheme(theme) {
@@ -25,7 +25,7 @@
     document.body.classList.toggle("theme-light", theme === "light");
     const label = $(".theme-label");
     if (label) label.textContent = theme === "dark" ? "Ночь" : "День";
-    try { localStorage.setItem("rozvedka-theme", theme); } catch { /* ignore */ }
+    try { localStorage.setItem("zatsepka-theme", theme); } catch { /* ignore */ }
   }
 
   function renderChips(container, values, kind) {

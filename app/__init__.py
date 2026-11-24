@@ -1,3 +1,3 @@
-"""Rozvedka - local lead reconnaissance application."""
+"""Zatsepka - local lead reconnaissance application."""
 
 __version__ = "0.1.0"

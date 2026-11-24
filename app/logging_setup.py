@@ -44,11 +44,11 @@ def get_module_logger(module_id: str) -> logging.Logger:
     """Per-module rotating log used by the hub (logs/<module>.log)."""
     setup_logging()
     logger = logging.getLogger(f"module.{module_id}")
-    if not any(isinstance(h, RotatingFileHandler) and getattr(h, "rozvedka_module", None) == module_id for h in logger.handlers):
+    if not any(isinstance(h, RotatingFileHandler) and getattr(h, "zatsepka_module", None) == module_id for h in logger.handlers):
         ensure_dirs()
         handler = RotatingFileHandler(LOGS_DIR / f"{module_id}.log", maxBytes=5_000_000, backupCount=3, encoding="utf-8")
         handler.setFormatter(logging.Formatter(_FORMAT))
-        handler.rozvedka_module = module_id  # type: ignore[attr-defined]
+        handler.zatsepka_module = module_id  # type: ignore[attr-defined]
         logger.addHandler(handler)
         logger.propagate = True
     return logger

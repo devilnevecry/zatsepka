@@ -28,7 +28,7 @@ async def lifespan(app: FastAPI):
 
 
 def create_app() -> FastAPI:
-    app = FastAPI(title="Rozvedka", version=__version__, lifespan=lifespan)
+    app = FastAPI(title="Zatsepka", version=__version__, lifespan=lifespan)
     STATIC_DIR.mkdir(parents=True, exist_ok=True)
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 

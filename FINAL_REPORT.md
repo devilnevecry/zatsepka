@@ -1,4 +1,4 @@
-# FINAL REPORT - РАЗВЕДКА
+# FINAL REPORT - ЗАЦЕПКА
 
 ## What works
 Local FastAPI app (127.0.0.1:8000) started by `run.bat`: search across Google Maps, Yandex Maps and 2GIS; dedupe/merge; site enrichment and flags; lead cards with Base/messages tabs; drawer with prompts, channel links and message statuses; charts, hub dashboard, queue, supervisor, diagnostics. No cloud LLM calls, no accounts, no paid APIs, no CDN at runtime. Ollama is a status indicator only. Nothing is ever sent automatically.

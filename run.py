@@ -58,7 +58,7 @@ def main() -> None:
         print(f"[run] Порт {PORT} занят другим приложением. Освободите порт и запустите снова.")
         raise SystemExit(1)
     threading.Thread(target=_open_tab_when_ready, args=(url,), daemon=True).start()
-    print(f"[run] РАЗВЕДКА запускается на {url}")
+    print(f"[run] ЗАЦЕПКА запускается на {url}")
     uvicorn.run("app.main:app", host=HOST, port=PORT, reload=False, log_level="info")
 
 

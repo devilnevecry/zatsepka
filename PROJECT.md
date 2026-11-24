@@ -1,4 +1,4 @@
-# PROJECT.md - Rozvedka clone, build the whole project autonomously
+# PROJECT.md - Zatsepka clone, build the whole project autonomously
 
 You are the only engineer. Deliver a finished, tested, runnable local app that works like the reference screen recordings (docs/reference/ has frames; SPEC section 7 is the visual contract). Work through stages 1-12 in order, continuously, then final acceptance. This file is complete: nothing else is needed from the user.
 
@@ -40,7 +40,7 @@ You are the only engineer. Deliver a finished, tested, runnable local app that w
 
 
 ## 1. Layout
-rozvedka/
+zatsepka/
   run.py  run.bat  requirements.txt  pyproject.toml
   PROJECT.md  PROGRESS.md  DECISIONS.md  FINAL_REPORT.md
   app/
@@ -54,7 +54,7 @@ rozvedka/
     hub/      registry.py  supervisor.py  queue.py  metrics.py
     tools/    capture.py  peek.py  scrape.py  run_job.py
   tests/  fixtures/{google,yandex,twogis}/
-  data/ (rozvedka.db, browser_profile/)   debug/   logs/   (all gitignored)
+  data/ (zatsepka.db, browser_profile/)   debug/   logs/   (all gitignored)
 
 ## 2. Data model (SQLAlchemy)
 - Lead: id, dedupe_key (unique), name, category, address, city, lat, lon, phones (JSON list, E.164), emails (JSON list), website, socials (JSON: instagram, telegram, whatsapp, viber, vk, facebook, youtube), rating, reviews_count, description, hours (JSON), attributes (JSON list), price_range, plus_code, photos_count, top_reviews (JSON list, up to 5), extra (JSON: every other field a source exposes), maps (JSON: {google|yandex|twogis: {id, url}}), flags (JSON: no_site, only_socials, template_site, template_name, chain_count), status (new, in_base, contacted, waiting_reply, replied, deal, rejected), notes, first_seen, updated_at, job_id.
@@ -95,7 +95,7 @@ rozvedka/
 
 ## 7. UI (visual targets, approximate; images in docs/reference/ if present, view each at most once)
 - Dark glass theme by default, light theme via toggle at the rail bottom (labels 'Ночь'/'День'). CSS variables: --bg #0b0c10, --surface rgba(255,255,255,.04), --border rgba(255,255,255,.09), --text #e8e9ee, --muted #8b8fa3. Radius 14-18 px, hairline borders, soft blur, dense layout, 12-14 px type, system font stack.
-- Top bar: pin icon + 'РАЗВЕДКА' + small version text.
+- Top bar: pin icon + 'ЗАЦЕПКА' + small version text.
 - Left rail (~72 px): icon over a tiny label: Профиль (avatar), Поиск, Чаты, Отбор, Сообщения, ИИ, База, Клавиши, Графики, Настройки, Помощь. Active item = lighter rounded tile.
 - Поиск page, two columns. Left panel (~380 px, scrolls): city chips (+ add, x remove); category chips with 'добавить все'; block 'Параметры': checkbox 'Не повторять пары «город × категория» за N дней', collapsible 'Тонкая настройка: пауза и лимиты', summary box (N городов × M категорий = K пар, уже искали - пропустим X, осталось Y, примерно Z мин), limit fields, source toggles (Google, Яндекс, 2ГИС), buttons 'Начать поиск' (primary), 'Пауза', 'Стоп' (red outline). Right: pill tabs 'Парсер N' / 'База N' / 'Сообщения N', global search input, dropdown filters (город, тип, сфера, статус), line 'Показано X из Y лидов (в базе Z)', toolbar (export, delete selected), responsive card grid (3-5 columns).
 - Lead card: checkbox top-left; flag pill: 'Без сайта' orange, 'Только соцсети' purple, 'Шаблон' yellow, 'Ждёт ответа' yellow outline, 'N компаний' blue; rating chip with star top-right; bold name (2-line clamp); pin + 'город · категория'; row of rounded-square icon buttons Instagram (pink), Telegram (blue), Viber (purple), WhatsApp (green), dimmed when absent; '+ В базу' button; faint dot-grid map thumbnail drawn from lat/lon as inline SVG. Hover: lift + border glow. Click opens the drawer.
