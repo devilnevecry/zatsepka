@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="stub-page" x-data="{ offer: '', tone: '', length: '', template: '', preview: '' }">
+  <h1>ИИ — конструктор промптов</h1>
+  <p class="stub-text">Промпт собирается локально и копируется в карточке лида. Модель не вызывается.</p>
+  <div class="stub-card">
+    <label>Моё предложение<br><textarea id="ai-offer" rows="4" style="width:100%">{{ offer }}</textarea></label><br>
+    <label>Тон <input id="ai-tone" type="text" value="дружелюбный"></label>
+    <label>Длина <input id="ai-length" type="text" value="короткий"></label>
+    <label>Шаблон промпта<br><textarea id="ai-template" rows="8" style="width:100%"></textarea></label>
+    <button id="ai-save" class="btn-primary" type="button">Сохранить</button>
+    <button id="ai-preview" class="btn-secondary" type="button">Предпросмотр на примере</button>
+    <pre id="ai-preview-box" style="white-space:pre-wrap"></pre>
+  </div>
+</section>
+{% endblock %}

@@ -152,12 +152,29 @@
       <div class="drawer-section"><h3>Сообщение</h3>
         <div class="drawer-nav"><button type="button" data-channel-open="telegram">Telegram</button><button type="button" data-channel-open="whatsapp">WhatsApp</button><button type="button" data-channel-open="instagram">Instagram</button><button type="button" data-channel-open="call">Позвонить</button></div>
         <button id="build-prompt" class="btn-secondary" type="button">Собрать промпт</button>
+        <button id="copy-prompt" class="btn-secondary" type="button">Скопировать промпт</button>
+        <pre id="prompt-box" style="white-space:pre-wrap"></pre>
         <textarea id="message-text" rows="4" style="width:100%" placeholder="Текст сообщения"></textarea>
+        <input id="email-subject" type="text" placeholder="Тема письма" style="width:100%">
         <button id="mark-sent" class="btn-primary" type="button">Отметить отправленным</button>
+        <button id="mark-replied" class="btn-secondary" type="button">Ответили</button>
       </div>`;
     drawer.classList.remove("hidden");
     $("#drawer-backdrop").classList.remove("hidden");
     $("#drawer-notes").addEventListener("change", e => api(`/api/leads/${lead.id}/notes`, { method: "POST", body: JSON.stringify({ notes: e.target.value }) }));
+    $("#build-prompt").addEventListener("click", async () => {
+      const r = await api("/api/prompts/build", { method: "POST", body: JSON.stringify({ lead, channel: "telegram" }) });
+      $("#prompt-box").textContent = r.prompt;
+    });
+    $("#copy-prompt").addEventListener("click", () => navigator.clipboard?.writeText($("#prompt-box").textContent || ""));
+    $("#mark-sent").addEventListener("click", async () => {
+      await api("/api/messages/sent", { method: "POST", body: JSON.stringify({ lead_id: lead.id, text: $("#message-text").value, channel: "telegram" }) });
+      closeDrawer(); loadLeads();
+    });
+    $("#mark-replied").addEventListener("click", async () => {
+      await api("/api/messages/replied", { method: "POST", body: JSON.stringify({ lead_id: lead.id, text: $("#message-text").value }) });
+      closeDrawer(); loadLeads();
+    });
     if (lead.lat && lead.lon && window.L) {
       try {
         const map = L.map("drawer-map").setView([lead.lat, lead.lon], 15);
@@ -265,6 +282,7 @@
       }
       const channel = e.target.closest("[data-channel-open]");
       if (channel) { openChannel(state.source, channel.dataset.channelOpen); return; }
+      if (e.target.id === "build-prompt") return;
       const card = e.target.closest(".lead-card");
       if (card && !e.target.closest("button,a,input")) {
         const lead = state.leads.find(l => l.id === Number(card.dataset.leadId));

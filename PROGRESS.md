@@ -26,7 +26,7 @@
 - normalize/dedupe/jobs/events/geo + run_job CLI; fake-scraper tests cover dedupe/skip/pause/stop/SourceChanged.
 - live run_job: google=20 yandex=20 twogis=12 (52 leads); fixed pause_event init + shared BrowserManager.
 
-## Stage 8 - enrichment and flags
-- enrich/site.py (httpx, 8s timeout, 2MB, max 3 pages), socials.py, template_detect.py; flags computation wired into job step.
-- Manual 'Обогатить выбранные' API + button; dead sites never fail job.
-- tests on saved HTML samples: 66 pass; ruff clean.
+## Stage 9 - outreach
+- prompts.py (no model calls), channel link generation, messages/templates/presets API, AI page template.
+- Drawer prompt builder/copy, textarea, channel buttons, mark sent/replied; batch .md export.
+- tests: 73 pass; ruff clean.

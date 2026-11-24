@@ -34,6 +34,11 @@ def search_page_alias(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(request, "search.html", {"active": "search"})
 
 
+@router.get("/page/ai", response_class=HTMLResponse)
+def ai_page(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(request, "ai.html", {"active": "ai"})
+
+
 @router.get("/page/base", response_class=HTMLResponse)
 def base_page(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(request, "search.html", {"active": "base"})
