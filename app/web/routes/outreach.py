@@ -8,7 +8,7 @@ from urllib.parse import quote
 from fastapi import APIRouter, Body
 from fastapi.responses import Response
 
-from app.ai.prompts import DEFAULT_STATIC_TEMPLATES, build_prompt, render_static, validate_template
+from app.ai.prompts import DEFAULT_STATIC_TEMPLATES, VARIABLES, build_prompt, render_static, validate_template
 from app.db import session_scope
 from app.models import Lead, Message, Template
 
@@ -30,7 +30,9 @@ def channel_link(lead: dict[str, Any], channel: str, text: str, subject: str = "
     if channel == "telegram":
         if socials.get("telegram"):
             return f"https://t.me/{str(socials['telegram']).rsplit('/', 1)[-1]}"
-        return f"https://t.me/{digits}" if digits else None
+        if digits:
+            return f"https://t.me/{digits}"
+        return "https://t.me/"
     if channel == "instagram":
         return socials.get("instagram")
     if channel == "viber":
@@ -63,7 +65,7 @@ def get_prompt_template() -> dict:
     with session_scope() as s:
         settings = config.get_settings(s)
     templates = settings.get("prompt_templates") or {}
-    return {"template": templates.get("default", ""), "variables": list((templates.get("default") or "").count("{" for _ in [0]) and [] or [])}
+    return {"template": templates.get("default", ""), "variables": list(VARIABLES)}
 
 
 @router.post("/prompts/template")

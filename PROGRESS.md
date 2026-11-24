@@ -26,7 +26,8 @@
 - normalize/dedupe/jobs/events/geo + run_job CLI; fake-scraper tests cover dedupe/skip/pause/stop/SourceChanged.
 - live run_job: google=20 yandex=20 twogis=12 (52 leads); fixed pause_event init + shared BrowserManager.
 
-## Stage 11 - hub
-- Registry (leads + hh/habr/freelance 'скоро'), persistent queue, supervisor backoff, psutil/Ollama metrics.
-- Dashboard template with module cards, live log tail SSE, diagnostics endpoint; rotating per-module logs.
-- tests: queue order/persistence, supervisor backoff, offline dashboard: 81 pass; ruff clean.
+## Stage 12 - hardening and acceptance
+- DB backup on start (last 5), diagnostics page, README.md, page screenshots to debug/ui/ (13 pages, 0 console errors).
+- Full pytest: 93 pass, 80.5% coverage; ruff clean; live tests 4 pass (per-source table in FINAL_REPORT.md).
+- Fixed EventBus infinite keepalive loop, geo domain override, 2GIS empty records, Telegram link fallback, run.py port check.
+- run.bat verified from clean clone: /health OK; FINAL_REPORT.md + SPEC_CHECKLIST.md written.

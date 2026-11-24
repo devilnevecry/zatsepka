@@ -17,6 +17,12 @@ from app.paths import STATIC_DIR, ensure_dirs
 async def lifespan(app: FastAPI):
     setup_logging()
     ensure_dirs()
+    try:
+        from app.db_backup import backup_db
+
+        backup_db()
+    except Exception:  # noqa: BLE001
+        pass
     init_db()
     yield
 

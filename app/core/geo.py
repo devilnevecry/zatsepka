@@ -16,7 +16,8 @@ def resolve_url(source: str, query: str, city: str, country: str = "Россия
     if source == "yandex":
         return f"https://{domains['yandex']}/maps/?text={quote_plus(query + ' ' + city)}"
     if source == "twogis":
-        return f"https://{domains['twogis']}/{TwoGisScraper.city_slug(city)}/search/{quote_plus(query)}"
+        domain = (base_domains or {}).get("twogis", "2gis.ru")
+        return f"https://{domain}/{TwoGisScraper.city_slug(city)}/search/{quote_plus(query)}"
     raise ValueError(f"unknown source {source}")
 
 

@@ -37,14 +37,12 @@ def _port_busy_with_our_app(url: str) -> bool:
 
 
 def _port_free() -> bool:
-    import socket
+    import psutil
 
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        try:
-            sock.bind((HOST, PORT))
-            return True
-        except OSError:
+    for conn in psutil.net_connections(kind="inet"):
+        if conn.laddr and conn.laddr.port == PORT and conn.status == "LISTEN":
             return False
+    return True
 
 
 def main() -> None:

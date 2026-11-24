@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="stub-page">
+  <h1>Диагностика</h1>
+  <p class="stub-text">Неудачные пары (SourceChanged) и пути снимков отладки.</p>
+  <div class="stub-card"><div id="diagnostics-list">Загрузка…</div></div>
+</section>
+<script>
+  fetch('/api/hub/diagnostics').then(r => r.json()).then(rows => {
+    document.getElementById('diagnostics-list').innerHTML = rows.length
+      ? rows.map(r => `<div class="stub-row">${r.source}: ${r.city}/${r.category} — ${r.error}<br><small>${r.snapshot}</small></div>`).join('')
+      : 'Неудачных пар нет';
+  });
+</script>
+{% endblock %}

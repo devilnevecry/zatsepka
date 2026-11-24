@@ -35,6 +35,8 @@ def parse_twogis_payload(payload: Any, base_domain: str = "2gis.ru") -> list[Raw
         if not isinstance(item, dict):
             continue
         name = str(item.get("name") or "")
+        if not name:
+            continue
         phones: list[str] = []
         emails: list[str] = []
         website = ""

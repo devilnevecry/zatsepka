@@ -49,7 +49,10 @@ class EventBus:
         try:
             yield ": connected\n\n"
             emitted = 0
-            while emitted < max_events:
+            iterations = 0
+            max_iterations = max_events * 10
+            while emitted < max_events and iterations < max_iterations:
+                iterations += 1
                 try:
                     item = q.get(timeout=timeout)
                 except queue.Empty:
