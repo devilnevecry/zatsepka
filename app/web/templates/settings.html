@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="stub-page">
+  <h1>Настройки</h1>
+  <p class="stub-text">Изменения сохраняются сразу и не требуют перезапуска.</p>
+  <div class="stub-card">
+    <label>Страна <input id="set-country" type="text"></label><br>
+    <label>Телефонный регион <input id="set-region" type="text"></label><br>
+    <label>Дней пропуска <input id="set-skip" type="number"></label><br>
+    <label>Результатов на пару <input id="set-max" type="number"></label><br>
+    <label>Домен 2ГИС <input id="set-domain" type="text"></label><br>
+    <label>Ollama URL <input id="set-ollama" type="text"></label><br>
+    <label>Моё предложение<br><textarea id="set-offer" rows="4" style="width:100%"></textarea></label><br>
+    <button id="set-save" class="btn-primary" type="button">Сохранить</button>
+  </div>
+</section>
+<script>
+  fetch('/api/settings').then(r => r.json()).then(s => {
+    document.getElementById('set-country').value = s.country;
+    document.getElementById('set-region').value = s.phone_region;
+    document.getElementById('set-skip').value = s.skip_days;
+    document.getElementById('set-max').value = s.max_results_per_pair;
+    document.getElementById('set-domain').value = (s.base_domains || {}).twogis || '';
+    document.getElementById('set-ollama').value = s.ollama_url;
+    document.getElementById('set-offer').value = s.my_offer || '';
+  });
+  document.getElementById('set-save').addEventListener('click', () => {
+    const domains = {};
+    fetch('/api/settings').then(r => r.json()).then(s => {
+      Object.assign(domains, s.base_domains || {});
+      domains.twogis = document.getElementById('set-domain').value;
+      return fetch('/api/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          country: document.getElementById('set-country').value,
+          phone_region: document.getElementById('set-region').value,
+          skip_days: Number(document.getElementById('set-skip').value),
+          max_results_per_pair: Number(document.getElementById('set-max').value),
+          base_domains: domains,
+          ollama_url: document.getElementById('set-ollama').value,
+          my_offer: document.getElementById('set-offer').value
+        }) });
+    });
+  });
+</script>
+{% endblock %}

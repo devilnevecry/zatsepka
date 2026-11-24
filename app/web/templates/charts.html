@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="stub-page">
+  <h1>Графики</h1>
+  <div class="stub-card"><canvas id="chart-main" height="120"></canvas></div>
+  <div class="stub-card" style="margin-top:14px"><div id="chart-stats">Загрузка…</div></div>
+</section>
+<script>
+  fetch('/api/charts').then(r => r.json()).then(data => {
+    const el = document.getElementById('chart-stats');
+    el.textContent = Object.entries(data).map(([k, v]) => `${k}: ${v.length}`).join(' · ');
+    const canvas = document.getElementById('chart-main');
+    if (window.Chart && data.leads_per_day.length) {
+      new Chart(canvas, { type: 'bar', data: {
+        labels: data.leads_per_day.map(x => x[0]),
+        datasets: [{ label: 'Лиды по дням', data: data.leads_per_day.map(x => x[1]), backgroundColor: '#7aa2ff' }]
+      }});
+    }
+  });
+</script>
+{% endblock %}

@@ -34,6 +34,31 @@ def search_page_alias(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(request, "search.html", {"active": "search"})
 
 
+@router.get("/page/charts", response_class=HTMLResponse)
+def charts_page(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(request, "charts.html", {"active": "charts"})
+
+
+@router.get("/page/profile", response_class=HTMLResponse)
+def profile_page(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(request, "profile.html", {"active": "profile"})
+
+
+@router.get("/page/settings", response_class=HTMLResponse)
+def settings_page(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(request, "settings.html", {"active": "settings"})
+
+
+@router.get("/page/keys", response_class=HTMLResponse)
+def keys_page(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(request, "keys.html", {"active": "keys"})
+
+
+@router.get("/page/help", response_class=HTMLResponse)
+def help_page(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(request, "help.html", {"active": "help"})
+
+
 @router.get("/page/ai", response_class=HTMLResponse)
 def ai_page(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(request, "ai.html", {"active": "ai"})

@@ -384,6 +384,14 @@
         const lead = state.leads.find(l => l.id === Number(document.activeElement?.dataset?.leadId));
         if (lead) api(`/api/leads/${lead.id}/status`, { method: "POST", body: JSON.stringify({ status: "in_base" }) }).then(loadLeads);
       }
+      if (key === "enter") {
+        const card = document.activeElement?.closest?.(".lead-card");
+        if (card) {
+          const lead = state.leads.find(l => l.id === Number(card.dataset.leadId));
+          if (lead) openDrawer(lead);
+        }
+      }
+      if (key === "s") $("#start-btn")?.click();
     });
 
     const latest = await api("/api/jobs/latest");

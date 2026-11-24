@@ -30,11 +30,12 @@ def create_app() -> FastAPI:
     def health() -> dict:
         return {"ok": True}
 
-    from app.web.routes import api, outreach, pages
+    from app.web.routes import api, misc, outreach, pages
 
     app.include_router(pages.router)
     app.include_router(api.router)
     app.include_router(outreach.router)
+    app.include_router(misc.router)
     return app
 
 

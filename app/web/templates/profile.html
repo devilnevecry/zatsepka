@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="stub-page">
+  <h1>Профиль</h1>
+  <div class="stub-card">
+    <div id="profile-name">Оператор</div>
+    <img id="profile-avatar" alt="Аватар" style="width:80px;height:80px;border-radius:50%;object-fit:cover;display:none">
+    <input id="avatar-upload" type="file" accept="image/*" aria-label="Загрузить аватар">
+    <div id="profile-stats" style="margin-top:12px"></div>
+  </div>
+</section>
+<script>
+  fetch('/api/profile/stats').then(r => r.json()).then(d => {
+    document.getElementById('profile-name').textContent = d.name;
+    const img = document.getElementById('profile-avatar');
+    if (d.avatar) { img.src = d.avatar; img.style.display = 'block'; }
+    document.getElementById('profile-stats').textContent =
+      `Найдено: ${d.found} · В базе: ${d.in_base} · Контакты: ${d.contacted} · Ответили: ${d.replied}`;
+  });
+  document.getElementById('avatar-upload').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => fetch('/api/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ profile_avatar: reader.result }) }).then(() => location.reload());
+    reader.readAsDataURL(file);
+  });
+</script>
+{% endblock %}
