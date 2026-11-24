@@ -334,6 +334,11 @@
       state.selected.clear();
       loadLeads();
     });
+    $("#enrich-btn")?.addEventListener("click", async () => {
+      const ids = state.selected.size ? [...state.selected] : state.leads.map(l => l.id);
+      await api("/api/leads/enrich", { method: "POST", body: JSON.stringify({ ids }) });
+      loadLeads();
+    });
     $("#export-btn")?.addEventListener("click", async () => {
       const ids = state.selected.size ? [...state.selected] : state.leads.map(l => l.id);
       const resp = await fetch("/api/export", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ids, format: "csv" }) });

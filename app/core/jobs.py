@@ -291,6 +291,10 @@ class JobRunner:
 
             merged = merge_places(places, phone_region)
             for data in merged:
+                if params.get("enrich", True) and data.get("website"):
+                    from app.enrich.site import enrich_lead_sync
+
+                    data = enrich_lead_sync(data)
                 place = RawPlace(
                     source=source,
                     name=data.get("name", ""),
@@ -309,6 +313,9 @@ class JobRunner:
                     extra=data.get("extra") or {},
                 )
                 lead = upsert_lead(session, data, job_id=job_id)
+                from app.enrich.template_detect import compute_flags
+
+                lead.flags = compute_flags(data)
                 unique += 1
                 new_lead_ids.append(lead.id)
         for lead_id in new_lead_ids:

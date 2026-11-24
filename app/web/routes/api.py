@@ -190,6 +190,27 @@ def save_notes(lead_id: int, body: dict = Body(...)) -> dict:
     return {"ok": False}
 
 
+@router.post("/leads/enrich")
+def enrich_selected(body: dict = Body(...)) -> dict:
+    from app.core.dedupe import upsert_lead
+    from app.enrich.site import enrich_lead_sync
+    from app.enrich.template_detect import compute_flags
+
+    ids = body.get("ids") or []
+    updated = 0
+    with session_scope() as s:
+        for lead_id in ids:
+            lead = s.get(Lead, int(lead_id))
+            if not lead or not lead.website:
+                continue
+            data = lead.to_dict()
+            data = enrich_lead_sync(data)
+            upsert_lead(s, data)
+            lead.flags = compute_flags(data)
+            updated += 1
+    return {"ok": True, "updated": updated}
+
+
 @router.post("/export")
 def export_leads(body: dict = Body(...)) -> Response:
     from app.web.export import leads_csv, leads_xlsx
