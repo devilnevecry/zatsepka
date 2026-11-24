@@ -146,9 +146,15 @@
         <div>Email: ${escapeHtml((lead.emails || []).join(", ") || "—")}</div>
         <div>Сайт: ${escapeHtml(lead.website || "—")}</div>
       </div>
-      <div class="drawer-section"><h3>Карта</h3><div id="drawer-map" style="height:180px;border-radius:12px;background:var(--surface)"></div></div>
-      <div class="drawer-section"><h3>Источники</h3>${Object.keys(lead.maps || {}).map(k => `<a href="${escapeHtml(lead.maps[k].url)}" target="_blank" rel="noopener">${k}</a>`).join(" ") || "—"}</div>
-      <div class="drawer-section"><h3>Заметки</h3><textarea id="drawer-notes" rows="3" style="width:100%">${escapeHtml(lead.notes || "")}</textarea></div>`;
+      <div class="drawer-section"><h3>Карта</h3><div id="drawer-map" style="height:180px;border-radius:12px;background:var(--surface);background-image:radial-gradient(circle,var(--muted) 1px,transparent 1px);background-size:12px 12px"></div></div>
+      <div class="drawer-section"><h3>Источники</h3>${Object.entries(lead.maps || {}).map(([k, v]) => `<a href="${escapeHtml(v.url)}" target="_blank" rel="noopener">${escapeHtml(k)}</a>`).join(" ") || "—"}</div>
+      <div class="drawer-section"><h3>Заметки</h3><textarea id="drawer-notes" rows="3" style="width:100%">${escapeHtml(lead.notes || "")}</textarea></div>
+      <div class="drawer-section"><h3>Сообщение</h3>
+        <div class="drawer-nav"><button type="button" data-channel-open="telegram">Telegram</button><button type="button" data-channel-open="whatsapp">WhatsApp</button><button type="button" data-channel-open="instagram">Instagram</button><button type="button" data-channel-open="call">Позвонить</button></div>
+        <button id="build-prompt" class="btn-secondary" type="button">Собрать промпт</button>
+        <textarea id="message-text" rows="4" style="width:100%" placeholder="Текст сообщения"></textarea>
+        <button id="mark-sent" class="btn-primary" type="button">Отметить отправленным</button>
+      </div>`;
     drawer.classList.remove("hidden");
     $("#drawer-backdrop").classList.remove("hidden");
     $("#drawer-notes").addEventListener("change", e => api(`/api/leads/${lead.id}/notes`, { method: "POST", body: JSON.stringify({ notes: e.target.value }) }));
@@ -164,6 +170,23 @@
   function closeDrawer() {
     $("#drawer").classList.add("hidden");
     $("#drawer-backdrop").classList.add("hidden");
+  }
+
+  function openChannel(lead, channel) {
+    if (!lead) return;
+    let url = "";
+    const digits = (lead.phones?.[0] || "").replace(/\D/g, "");
+    if (channel === "telegram") {
+      const user = (lead.socials || {}).telegram;
+      url = user ? user : digits ? `https://t.me/${digits}` : "";
+    } else if (channel === "whatsapp" && digits) {
+      url = `https://wa.me/${digits}`;
+    } else if (channel === "instagram" && lead.socials?.instagram) {
+      url = lead.socials.instagram;
+    } else if (channel === "call" && digits) {
+      url = `tel:+${digits}`;
+    }
+    if (url) window.open(url, "_blank", "noopener");
   }
 
   function connectSse(jobId) {
@@ -196,6 +219,7 @@
     if (!$("#card-grid")) return;
 
     state.settings = await api("/api/settings");
+    if (window.location.pathname.includes("/page/base")) state.tab = "base";
     renderChips($("#city-chips"), state.settings.cities, "city");
     renderChips($("#category-chips"), state.settings.categories, "category");
     $("#skip-days").value = state.settings.skip_days;
@@ -234,6 +258,13 @@
         return;
       }
       if (e.target.closest("[data-drawer-close]") || e.target.id === "drawer-backdrop") { closeDrawer(); return; }
+      if (e.target.closest("[data-drawer-prev]")) {
+        const idx = state.leads.findIndex(l => l.id === state.source?.id);
+        if (idx > 0) openDrawer(state.leads[idx - 1]);
+        return;
+      }
+      const channel = e.target.closest("[data-channel-open]");
+      if (channel) { openChannel(state.source, channel.dataset.channelOpen); return; }
       const card = e.target.closest(".lead-card");
       if (card && !e.target.closest("button,a,input")) {
         const lead = state.leads.find(l => l.id === Number(card.dataset.leadId));
@@ -302,6 +333,15 @@
       await api("/api/leads/bulk", { method: "DELETE", body: JSON.stringify({ ids: [...state.selected] }) });
       state.selected.clear();
       loadLeads();
+    });
+    $("#export-btn")?.addEventListener("click", async () => {
+      const ids = state.selected.size ? [...state.selected] : state.leads.map(l => l.id);
+      const resp = await fetch("/api/export", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ids, format: "csv" }) });
+      const blob = await resp.blob();
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "leads.csv";
+      a.click();
     });
 
     document.addEventListener("keydown", e => {

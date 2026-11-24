@@ -34,6 +34,11 @@ def search_page_alias(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(request, "search.html", {"active": "search"})
 
 
+@router.get("/page/base", response_class=HTMLResponse)
+def base_page(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(request, "search.html", {"active": "base"})
+
+
 @router.get("/page/{slug}", response_class=HTMLResponse)
 def stub_page(request: Request, slug: str) -> HTMLResponse:
     title = STUB_TITLES.get(slug, "Раздел")

@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 
 from fastapi import APIRouter, Body, Request
-from fastapi.responses import StreamingResponse
+from fastapi.responses import Response, StreamingResponse
 
 from app import config
 from app.core.events import event_bus
@@ -188,3 +188,27 @@ def save_notes(lead_id: int, body: dict = Body(...)) -> dict:
             lead.notes = str(body.get("notes", lead.notes))
             return {"ok": True}
     return {"ok": False}
+
+
+@router.post("/export")
+def export_leads(body: dict = Body(...)) -> Response:
+    from app.web.export import leads_csv, leads_xlsx
+
+    ids = body.get("ids") or []
+    fmt = body.get("format", "csv")
+    with session_scope() as s:
+        q = s.query(Lead)
+        if ids:
+            q = q.filter(Lead.id.in_([int(i) for i in ids]))
+        leads = [lead.to_dict() for lead in q.all()]
+    if fmt == "xlsx":
+        return Response(
+            leads_xlsx(leads),
+            media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            headers={"Content-Disposition": 'attachment; filename="leads.xlsx"'},
+        )
+    return Response(
+        leads_csv(leads),
+        media_type="text/csv; charset=utf-8",
+        headers={"Content-Disposition": 'attachment; filename="leads.csv"'},
+    )

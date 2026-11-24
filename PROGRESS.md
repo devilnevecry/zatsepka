@@ -26,8 +26,7 @@
 - normalize/dedupe/jobs/events/geo + run_job CLI; fake-scraper tests cover dedupe/skip/pause/stop/SourceChanged.
 - live run_job: google=20 yandex=20 twogis=12 (52 leads); fixed pause_event init + shared BrowserManager.
 
-## Stage 6 - UI shell + Search page
-- base layout, rail, top bar, theme toggle (persisted), CSS variables, vendored libs.
-- Search page: city/category chips, params, estimate box, source toggles, Start/Pause/Stop, SSE cards, tabs/filters, card grid, + В базу, drawer stub.
-- API: settings/estimate/jobs/leads/counts/SSE; UI smoke + e2e with fake scrapers pass; screenshot debug/ui_search.png.
-- tests: 57 pass; ruff clean.
+## Stage 7 - Base, drawer, export
+- Base view reuses grid; drawer with contacts/map/sources/notes/message + channel links; Esc/prev navigation.
+- CSV (UTF-8 BOM) + XLSX export with Russian headers; bulk status/delete API; filters tests.
+- tests: 61 pass; ruff clean.
