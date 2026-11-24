@@ -142,8 +142,7 @@ class GoogleScraper(BaseScraper):
                 page.wait_for_timeout(1500)
             if not found:
                 raise SourceChanged("google returned zero places")
-            for raw in found:
-                yield raw
+            yield from found
         finally:
             try:
                 page.close()

@@ -20,3 +20,9 @@
 - Google list data: XHR search?tbm=map with pb param; response cleaned of `)]}'` and JSON.parsed; `d` -> items; each place el[14]; name=el[11], address=el[39], cid=el[10], place_id=el[78], rating=el[4][7], reviews=el[4][8], price=el[4][2], phone=el[178][0][3], website=el[7][0], lat=el[9][2], lon=el[9][3], photos=el[37][1], categories=el[13], hours=el[203][0], attributes=el[100][1], description=el[161][1].
 - Google scroll pitfall: window scrolling does nothing; scroll `[role=feed]` via mouse.wheel(0, 3000) after hover-center, wait up to 4s for count growth; stop after 3 scrolls w/o new items or end marker.
 - Block markers: url (sorry/index, sorry/captcha, consent.google.com), title (unusual traffic), text (unusual traffic / captcha phrases) -> NeedsHuman.
+
+## Stage 3 - Yandex findings
+- Search URL: https://yandex.ru/maps/?text=<query>+<city> (captures 20261123_171656 and _171738 saved results.html + XHR responses).
+- List anchors: `.search-list-view__list a[href*='/maps/org/']`; virtualized scroller `.scroll__container`; single result page state in `<script type="application/json" class="state-view">` with stack[0].results.items[]; both direct item and item.result shapes handled.
+- Fields per org: title, address/compositeAddress.street, coordinates[lat,lon], ratingData.ratingValue/ratingCount, workingTimeText, photos.count, categories[].name, features[].name, urls[0], phones[].value, socialLinks[].href.
+- Captcha markers: url showcaptcha/captcha.yandex/passport.yandex, text 'Подтвердите, что запросы отправляли вы' -> NeedsHuman.

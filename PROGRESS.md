@@ -9,7 +9,7 @@
 - Skeleton, config, db, models, logging, browser manager, capture/peek tools, run.bat/run.py done.
 - tests: db/config/peek/health/blocks/capture -> 28 passed; ruff clean; /health OK via run.py; committed.
 
-## Stage 2 - Google Maps scraper
-- Geoleadscraper hints; capture google 'барбершоп' Saratov --auto done; results/detail saved.
-- base.py (RawPlace/BaseScraper/errors/dedupe helpers) + google.py (pure parse + browser layer) implemented.
-- tests: google parser unit tests (34 total pass); ruff clean; live scrape found=20 rows (coverage fields empty in DOM path).
+## Stage 3 - Yandex scraper
+- Yandex captures (2) saved; results.html + XHR responses copied to tests/fixtures/yandex.
+- Pure parser parse_yandex_state + browser layer with anchor selector; live scrape found=20 rows after headed-browser fix.
+- tests: 38 total pass; ruff clean; DECISIONS findings recorded.
