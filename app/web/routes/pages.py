@@ -3,11 +3,17 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, Response
 
 from app.web.templating import templates
 
 router = APIRouter()
+
+
+@router.get("/favicon.ico")
+def favicon() -> Response:
+    return Response(status_code=204)
+
 
 STUB_TITLES = {
     "dashboard": "Дашборд",
