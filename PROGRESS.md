@@ -9,7 +9,7 @@
 - Skeleton, config, db, models, logging, browser manager, capture/peek tools, run.bat/run.py done.
 - tests: db/config/peek/health/blocks/capture -> 28 passed; ruff clean; /health OK via run.py; committed.
 
-## Stage 3 - Yandex scraper
-- Yandex captures (2) saved; results.html + XHR responses copied to tests/fixtures/yandex.
-- Pure parser parse_yandex_state + browser layer with anchor selector; live scrape found=20 rows after headed-browser fix.
-- tests: 38 total pass; ruff clean; DECISIONS findings recorded.
+## Stage 4 - 2GIS scraper
+- Captures saved; resp_0002/0004.json + detail.html in tests/fixtures/twogis.
+- parse_twogis_payload + parse_twogis_page_state + browser layer with city slug mapping; live run found=12 rows (recorded as known issue).
+- tests: 42 pass; ruff clean.

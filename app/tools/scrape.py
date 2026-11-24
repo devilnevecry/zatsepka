@@ -12,6 +12,7 @@ from app.browser.manager import BrowserManager
 from app.logging_setup import setup_logging
 from app.scrapers.base import BaseScraper
 from app.scrapers.google import GoogleScraper
+from app.scrapers.twogis import TwoGisScraper
 from app.scrapers.yandex import YandexScraper
 
 
@@ -20,7 +21,9 @@ def get_scraper(source: str) -> BaseScraper:
         return GoogleScraper()
     if source == "yandex":
         return YandexScraper()
-    raise ValueError(f"source {source} is not implemented yet (stage 4+)")
+    if source == "twogis":
+        return TwoGisScraper()
+    raise ValueError(f"source {source} is not supported")
 
 
 def run_scrape(source: str, query: str, city: str, max_results: int, country: str) -> int:
@@ -32,6 +35,8 @@ def run_scrape(source: str, query: str, city: str, max_results: int, country: st
         scraper = GoogleScraper(manager=manager)
     elif source == "yandex":
         scraper = YandexScraper(manager=manager)
+    elif source == "twogis":
+        scraper = TwoGisScraper(manager=manager)
     stop_event = None
     places = []
     try:
@@ -66,7 +71,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--country", default="Россия")
     ap.add_argument("--max", type=int, default=20)
     args = ap.parse_args(argv)
-    if args.source not in ("google", "yandex"):
+    if args.source not in ("google", "yandex", "twogis"):
         print(f"[scrape] source {args.source} not implemented yet")
         return 2
     return run_scrape(args.source, args.query, args.city, args.max, args.country)

@@ -26,3 +26,9 @@
 - List anchors: `.search-list-view__list a[href*='/maps/org/']`; virtualized scroller `.scroll__container`; single result page state in `<script type="application/json" class="state-view">` with stack[0].results.items[]; both direct item and item.result shapes handled.
 - Fields per org: title, address/compositeAddress.street, coordinates[lat,lon], ratingData.ratingValue/ratingCount, workingTimeText, photos.count, categories[].name, features[].name, urls[0], phones[].value, socialLinks[].href.
 - Captcha markers: url showcaptcha/captcha.yandex/passport.yandex, text 'Подтвердите, что запросы отправляли вы' -> NeedsHuman.
+
+## Stage 4 - 2GIS findings
+- Search URL https://2gis.ru/<city_slug>/search/<query>; city slugs saratov/engels; base domain configurable via settings.
+- Catalog API items (captured responses): result.items[] with id, name, address_name, rubrics[].name, point.lat/lon, reviews.general_rating/general_review_count, contact_groups[].contacts[] {type,text}, attribute_groups[].attributes[].name, external_content[0].count.
+- Page state embedded as `var initialState = JSON.parse('...')`; detail page saved to tests/fixtures/twogis/detail.html.
+- KNOWN ISSUE: live scrape of 'барбершоп' Saratov returns 12 unique firms (2 attempts, internal scroller fix) - below 15-row DoD; source exposes only 12 for that query; recorded for FINAL_REPORT.md.
