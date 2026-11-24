@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="stub-page">
+  <h1>Дашборд</h1>
+  <div id="hub-metrics" class="stub-card">Загрузка…</div>
+  <div id="hub-modules" class="card-grid" style="max-height:320px"></div>
+  <div class="stub-card" style="margin-top:14px">
+    <h3>Логи модулей</h3>
+    <div id="hub-log" style="white-space:pre-wrap;max-height:200px;overflow:auto"></div>
+  </div>
+</section>
+<script>
+  fetch('/api/hub/metrics').then(r => r.json()).then(m => {
+    document.getElementById('hub-metrics').textContent =
+      `CPU: ${m.cpu}% · RAM: ${m.ram}% · Disk: ${m.disk}% · GPU: ${m.gpu ?? 'нет'} · Ollama: ${m.ollama.available ? (m.ollama.model || 'загружена') : 'Ollama недоступна'}`;
+  });
+  fetch('/api/hub/modules').then(r => r.json()).then(mods => {
+    document.getElementById('hub-modules').innerHTML = mods.map(m => `
+      <div class="lead-card" style="cursor:default">
+        <div class="card-name">${m.icon} ${m.title}</div>
+        <div class="card-meta">Статус: ${m.status}</div>
+        <div class="card-bottom">
+          ${m.available ? `<button class="btn-mini" data-hub-start="${m.id}">Старт</button><button class="btn-mini" data-hub-stop="${m.id}">Стоп</button>` : '<span>скоро</span>'}
+          <button class="btn-mini" data-hub-queue="${m.id}">В очередь</button>
+        </div>
+      </div>`).join('');
+    document.querySelectorAll('[data-hub-start]').forEach(b => b.addEventListener('click', () => fetch(`/api/hub/modules/${b.dataset.hubStart}/start`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: '{}' })));
+    document.querySelectorAll('[data-hub-stop]').forEach(b => b.addEventListener('click', () => fetch(`/api/hub/modules/${b.dataset.hubStop}/stop`, { method: 'POST' })));
+    document.querySelectorAll('[data-hub-queue]').forEach(b => b.addEventListener('click', () => fetch(`/api/hub/modules/${b.dataset.hubQueue}/queue`, { method: 'POST' })));
+  });
+  const es = new EventSource('/api/hub/logs/leads?level=INFO&lines=50');
+  es.onmessage = e => { document.getElementById('hub-log').textContent = (JSON.parse(e.data).lines || []).slice(-20).join('\n'); };
+</script>
+{% endblock %}

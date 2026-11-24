@@ -34,6 +34,11 @@ def search_page_alias(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(request, "search.html", {"active": "search"})
 
 
+@router.get("/page/dashboard", response_class=HTMLResponse)
+def dashboard_page(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(request, "dashboard.html", {"active": "dashboard"})
+
+
 @router.get("/page/charts", response_class=HTMLResponse)
 def charts_page(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(request, "charts.html", {"active": "charts"})

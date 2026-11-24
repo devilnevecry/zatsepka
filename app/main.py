@@ -36,6 +36,10 @@ def create_app() -> FastAPI:
     app.include_router(api.router)
     app.include_router(outreach.router)
     app.include_router(misc.router)
+
+    from app.hub.routes import router as hub_router
+
+    app.include_router(hub_router)
     return app
 
 
