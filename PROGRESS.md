@@ -9,7 +9,7 @@
 - Skeleton, config, db, models, logging, browser manager, capture/peek tools, run.bat/run.py done.
 - tests: db/config/peek/health/blocks/capture -> 28 passed; ruff clean; /health OK via run.py; committed.
 
-## Stage 4 - 2GIS scraper
-- Captures saved; resp_0002/0004.json + detail.html in tests/fixtures/twogis.
-- parse_twogis_payload + parse_twogis_page_state + browser layer with city slug mapping; live run found=12 rows (recorded as known issue).
-- tests: 42 pass; ruff clean.
+## Stage 5 - normalize, dedupe, jobs
+- normalize.py/dedupe.py/jobs.py/events.py/geo.py + tools/run_job.py implemented; fake-scraper tests cover dedupe/skip/pause/stop/SourceChanged (55 tests pass).
+- Fixed pause_event init (worker hang) and shared BrowserManager per job; live run_job 3 sources: google=20 yandex=20 twogis=12 (52 total).
+- ruff clean; committed.
